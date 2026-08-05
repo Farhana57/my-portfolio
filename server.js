@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const path = require('path'); // পাথ মডিউলটি যুক্ত করা হলো
 require('dotenv').config();
 
 const app = express();
@@ -10,10 +11,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// স্ট্যাটিক ফোল্ডার কানেক্ট করা (যাতে index.html ব্রাউজারে শো করে)
+app.use(express.static(path.join(__dirname)));
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB Connected Successfully!'))
   .catch((err) => console.log('DB Connection Error:', err));
+
 // Contact Form Schema & Model
 const contactSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -33,9 +38,9 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Home Route
+// Home Route - ফ্রন্টএন্ডের index.html দেখানোর জন্য
 app.get('/', (req, res) => {
-  res.send('Portfolio Server is Running Successfully!');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // API Endpoint for Contact Form
@@ -64,8 +69,8 @@ app.post('/api/contact', async (req, res) => {
     }
 });
 
-// Server Port
-const PORT = 5000;
+// Server Port (Vercel-এর জন্য ডায়নামিক পোর্ট এবং লোকালের জন্য ৫০০০)
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
