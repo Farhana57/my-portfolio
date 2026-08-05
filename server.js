@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-const path = require('path'); // পাথ মডিউলটি যুক্ত করা হলো
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// স্ট্যাটিক ফোল্ডার কানেক্ট করা (যাতে index.html ব্রাউজারে শো করে)
+// স্ট্যাটিক ফোল্ডার পাবলিকলি এবং প্রপারলি হ্যান্ডেল করার জন্য
 app.use(express.static(path.join(__dirname)));
 
 // MongoDB Connection
@@ -38,7 +38,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Home Route - ফ্রন্টএন্ডের index.html দেখানোর জন্য
+// Home Route - index.html ফাইল রেন্ডার করার জন্য
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -69,7 +69,7 @@ app.post('/api/contact', async (req, res) => {
     }
 });
 
-// Server Port (Vercel-এর জন্য ডায়নামিক পোর্ট এবং লোকালের জন্য ৫০০০)
+// Server Port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
