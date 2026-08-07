@@ -38,11 +38,16 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Home Route - index.html ফাইল রেন্ডার করার জন্য
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+// ে index.html ফাইল
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Server Port
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 // API Endpoint for Contact Form
 app.post('/api/contact', async (req, res) => {
     try {
