@@ -11,11 +11,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// স্ট্যাটিক ফোল্ডার পাবলিকলি এবং প্রপারলি হ্যান্ডেল করার জন্য
+// Static folder handling
 app.use(express.static(path.join(__dirname)));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio';
+mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB Connected Successfully!'))
   .catch((err) => console.log('DB Connection Error:', err));
 
@@ -34,35 +35,30 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'farhanakhatun22@gmail.com', 
-        pass: 'farhanat50575253' 
+        pass: process.env.EMAIL_PASS || 'farhanat50575253'
     }
 });
 
-// ে index.html ফাইল
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// Home Route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Server Port
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
 // API Endpoint for Contact Form
 app.post('/api/contact', async (req, res) => {
     try {
         const { name, email, message } = req.body;
         
-        // ১. ডাটাবেজে সেভ করা
+        // 1. Save to Database
         const newContact = new Contact({ name, email, message });
         await newContact.save();
 
-        // ২. ইমেইল নোটিফিকেশন পাঠানো
+        // 2. Send Email Notification (English)
         const mailOptions = {
             from: email,
             to: 'farhanakhatun22@gmail.com',
-            subject: `নতুন পোর্টফোলিও মেসেজ এসেছে: ${name}`,
-            text: `নাম: ${name}\nইমেইল: ${email}\nমেসেজ: ${message}`
+            subject: `New Portfolio Message from: ${name}`,
+            text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
         };
 
         await transporter.sendMail(mailOptions);
