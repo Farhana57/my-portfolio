@@ -60,7 +60,11 @@
     }
 
     // ২. টাইপরাইটার অ্যানিমেশন লজিক
-    const textArray = ["Full-Stack MERN Developer", "Exicutive officer at UpToTechSyl", "Web Designer & Developer"];
+   const textArray = [
+    "Full-Stack MERN Developer",
+    "Executive Officer at UpToTechSyl",
+    "Web Designer & Developer"
+];
     const heroTyping = document.getElementById("hero-typing-role");
     const sidebarTyping = document.getElementById("typing-role");
 
