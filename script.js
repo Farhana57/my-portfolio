@@ -62,7 +62,7 @@
     // ২. টাইপরাইটার অ্যানিমেশন লজিক
    const textArray = [
     "Full-Stack MERN Developer",
-    "Executive Officer at UpToTechSyl",
+    "React & Node.js Developer",
     "Web Designer & Developer"
 ];
     const heroTyping = document.getElementById("hero-typing-role");
