@@ -60,11 +60,7 @@
     }
 
     // ২. টাইপরাইটার অ্যানিমেশন লজিক
-   const textArray = [
-    "Full-Stack MERN Developer",
-    "React & Node.js Developer",
-    "Web Designer & Developer"
-];
+    const textArray = ["Full-Stack MERN Developer", "React developer", "Web Designer & Nood j's Developer"];
     const heroTyping = document.getElementById("hero-typing-role");
     const sidebarTyping = document.getElementById("typing-role");
 
@@ -181,7 +177,7 @@
     }
 });
 
-// ৫. গ্লোবাল ফাংশনসমূহ (HTML থেকে সরাসরি কল করার জন্য)
+// ================= SERVICE & NAVBAR DROPDOWNS =================
 function toggleDesktopService() {
     const menu = document.getElementById('desktopServiceMenu');
     const arrow = document.getElementById('desktopServiceArrow');
@@ -213,6 +209,7 @@ function toggleServiceDropdown() {
     }
 }
 
+// ================= PROJECT MODAL JAVASCRIPT =================
 function openProjectModal(title, imageUrl, description) {
     const modalTitle = document.getElementById('modalTitle');
     const modalImage = document.getElementById('modalImage');
@@ -229,39 +226,54 @@ function closeProjectModal() {
     const projectModal = document.getElementById('projectModal');
     if (projectModal) projectModal.classList.add('hidden');
 }
+
 // ================= FIGMA MODAL JAVASCRIPT =================
-const modal = document.getElementById('figmaModal');
-const modalContent = document.getElementById('modalContent');
+const figmaModal = document.getElementById('figmaModal');
+const figmaModalContent = document.getElementById('modalContent');
 const body = document.body;
 
 function openFigmaModal() {
-    if (!modal || !modalContent) return;
-    modal.classList.remove('opacity-0', 'pointer-events-none');
-    modalContent.classList.remove('scale-95');
-    modalContent.classList.add('scale-100');
+    if (!figmaModal || !figmaModalContent) return;
+    figmaModal.classList.remove('opacity-0', 'pointer-events-none');
+    figmaModalContent.classList.remove('scale-95');
+    figmaModalContent.classList.add('scale-100');
     body.style.overflow = 'hidden';
 }
 
 function closeFigmaModal() {
-    if (!modal || !modalContent) return;
-    modal.classList.add('opacity-0', 'pointer-events-none');
-    modalContent.classList.remove('scale-100');
-    modalContent.classList.add('scale-95');
+    if (!figmaModal || !figmaModalContent) return;
+    figmaModal.classList.add('opacity-0', 'pointer-events-none');
+    figmaModalContent.classList.remove('scale-100');
+    figmaModalContent.classList.add('scale-95');
     body.style.overflow = '';
 }
 
-// Close modal on clicking outside the content area
+// Close modals on clicking outside the content area or pressing 'Esc'
 window.addEventListener('click', function(e) {
-    if (e.target === modal) {
+    const projectModal = document.getElementById('projectModal');
+    
+    // Figma Modal outside click
+    if (e.target === figmaModal) {
         closeFigmaModal();
+    }
+    
+    // Project Modal outside click
+    if (e.target === projectModal) {
+        closeProjectModal();
     }
 });
 
-// Close modal on pressing 'Esc' key
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && modal && !modal.classList.contains('pointer-events-none')) {
-        closeFigmaModal();
+    if (e.key === 'Escape') {
+        // Close Figma modal if open
+        if (figmaModal && !figmaModal.classList.contains('pointer-events-none')) {
+            closeFigmaModal();
+        }
+        // Close Project modal if open
+        const projectModal = document.getElementById('projectModal');
+        if (projectModal && !projectModal.classList.contains('hidden')) {
+            closeProjectModal();
+        }
     }
 });
-
    
